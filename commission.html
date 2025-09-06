@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Commission | RailLens Studio</title>
+  <link rel="stylesheet" href="/assets/main.css">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+    <h1><a href="/">RailLens Studio</a></h1>
+      <nav class="site-nav">
+        <a href="/">Gallery</a>
+        <a href="/commission.html">Commission</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>Book a Photoshoot or Commission</h1>
+<form id="commission-form">
+  <label>Your Name<br><input type="text" name="name" required></label><br>
+  <label>Email<br><input type="email" name="_replyto" required></label><br>
+  <label>Details / Message<br>
+    <textarea name="message" rows="5" required></textarea>
+  </label><br>
+  <button type="submit">Send</button>
+</form>
+
+<script>
+  const ROLE_ID = '1410406709217853558'; // replace with your Discord role ID
+  document.getElementById('commission-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const name = form.elements['name'].value;
+    const email = form.elements['_replyto'].value;
+    const message = form.elements['message'].value;
+    try {
+      await fetch('https://discord.com/api/webhooks/1413932953670647908/QiKDAWImpW_WtcIrlifKuJsjeTfpnMnqTRnfoUj76JfDeOR20tvXm3qAOlyTauaBr8Iq', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          content: `<@&${ROLE_ID}> **New Commission Request**\n**Name:** ${name}\n**Email:** ${email}\n**Message:** ${message}`,
+          allowed_mentions: { roles: [ROLE_ID] }
+        })
+      });
+      alert('Your commission request has been sent!');
+      form.reset();
+    } catch (err) {
+      console.error(err);
+      alert('Failed to send request. Please try again later.');
+    }
+  });
+</script>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      &copy; 2025 RailLens Studio
+    </div>
+</footer>
+  <script src="/assets/main.js"></script>
+</body>
+</html>
