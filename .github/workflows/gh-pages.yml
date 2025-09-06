@@ -1,4 +1,6 @@
 name: Deploy Jekyll site to GitHub Pages
+permissions:
+  contents: write
 
 on:
   push:
