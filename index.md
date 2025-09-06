@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Gallery
+permalink: /
 ---
 
 <h1>{{ page.title }}</h1>

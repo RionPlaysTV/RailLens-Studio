@@ -3,6 +3,7 @@ description: "Trains in motion — station stops and high-speed passes."
 baseurl: "/RailLens-Studio"
 url: "https://rionplaystv.github.io"
 markdown: kramdown
+permalink: pretty
 plugins:
   - jekyll-feed
 include:
