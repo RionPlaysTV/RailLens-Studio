@@ -8,7 +8,7 @@ permalink: /commission/
 <p class="status-notice"><strong>Commissions are OPEN</strong>, but <strong>Photoshoots are currently CLOSED</strong>.</p>
 <form id="commission-form">
   <label>Your Name<br><input type="text" name="name" required></label><br>
-  <label>Email<br><input type="email" name="to_email" required></label><br>
+  <label>Email<br><input type="email" name="email" required></label><br>
   <label>Details / Message<br>
     <textarea name="message" rows="5" required></textarea>
   </label><br>
@@ -29,7 +29,7 @@ permalink: /commission/
     e.preventDefault();
     const form = e.target;
     const name = form.elements['name'].value;
-  const email = form.elements['to_email'].value;
+  const email = form.elements['email'].value;
     const message = form.elements['message'].value;
     // Generate unique UIN
     const uin = Date.now().toString(36) + Math.random().toString(36).substr(2,5);
@@ -42,21 +42,16 @@ permalink: /commission/
           allowed_mentions: { roles: [ROLE_ID] }
         })
       });
-      // Send confirmation email with UIN
+      // Send confirmation email with UIN using sendForm
       try {
-        const emailResult = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-          to_name: name,
-          to_email: email,
-          uin: uin,
-          message: message
-        });
+        const emailResult = await emailjs.sendForm(
+          EMAILJS_SERVICE_ID,
+          EMAILJS_TEMPLATE_ID,
+          '#commission-form'
+        );
         console.log('EmailJS success:', emailResult);
       } catch (emailErr) {
         console.error('EmailJS raw error:', emailErr);
-        // Try to extract response text for details
-        if (emailErr.text) {
-          emailErr.text().then(text => console.error('EmailJS error details:', text));
-        }
         alert('Commission received! However, confirmation email failed to send.');
       }
       alert(`Your commission request has been received!\nYour UIN is: ${uin}`);
