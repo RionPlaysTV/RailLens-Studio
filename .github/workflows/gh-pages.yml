@@ -12,7 +12,7 @@ jobs:
       - name: Setup Ruby with Bundler cache
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.1
+          ruby-version: 3.2
           bundler-cache: true
       - name: Build site
         run: |
