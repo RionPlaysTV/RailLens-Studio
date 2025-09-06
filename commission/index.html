@@ -30,24 +30,41 @@
   <button type="submit">Send</button>
 </form>
 
+<!-- EmailJS SDK -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
 <script>
   const ROLE_ID = '1410406709217853558'; // replace with your Discord role ID
+  const EMAILJS_PUBLIC_KEY = 'Q1DXLrTYzJiYlsgwl'; // replace with your EmailJS public key
+  const EMAILJS_SERVICE_ID = 'service_yg768r4'; // replace with your email service ID
+  const EMAILJS_TEMPLATE_ID = 'template_cx4gicf'; // replace with your email template ID
+  emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+
   document.getElementById('commission-form').addEventListener('submit', async function(e) {
     e.preventDefault();
     const form = e.target;
     const name = form.elements['name'].value;
     const email = form.elements['_replyto'].value;
     const message = form.elements['message'].value;
+    // Generate unique UIN
+    const uin = Date.now().toString(36) + Math.random().toString(36).substr(2,5);
     try {
       await fetch('https://discord.com/api/webhooks/1413932953670647908/QiKDAWImpW_WtcIrlifKuJsjeTfpnMnqTRnfoUj76JfDeOR20tvXm3qAOlyTauaBr8Iq', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          content: `<@&${ROLE_ID}> **New Commission Request**\n**Name:** ${name}\n**Email:** ${email}\n**Message:** ${message}`,
+          content: `<@&${ROLE_ID}> **New Commission Request**\n**Name:** ${name}\n**Email:** ${email}\n**UIN:** ${uin}\n**Message:** ${message}`,
           allowed_mentions: { roles: [ROLE_ID] }
         })
       });
-      alert('Your commission request has been sent!');
+      // Send email with UIN
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        to_name: name,
+        to_email: email,
+        uin: uin,
+        message: message
+      });
+      alert(`Your commission request has been sent!\nYour UIN is: ${uin}`);
       form.reset();
     } catch (err) {
       console.error(err);
