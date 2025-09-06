@@ -10,7 +10,7 @@ title: Gallery
   <button class="carousel-control next">></button>
   {% for f in site.static_files %}
     {% if f.path contains 'images/gallery' %}
-      <img class="carousel-slide" src="{{ f.path }}" alt="{{ f.name }}">
+  <img class="carousel-slide" src="{{ site.baseurl }}{{ f.path }}" alt="{{ f.name }}">
     {% endif %}
   {% endfor %}
 </div>
