@@ -9,11 +9,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Ruby with Bundler cache
+      - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.2
-          bundler-cache: true
+      - name: Install dependencies
+        run: |
+          gem install bundler
+          bundle config set path vendor/bundle
+          bundle lock --add-platform x86_64-linux
+          bundle install --jobs 4 --retry 3
       - name: Build site
         run: |
           bundle exec jekyll build
