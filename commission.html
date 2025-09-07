@@ -7,8 +7,10 @@ permalink: /commission/
 <h1>Book a Photoshoot or Commission</h1>
 <p class="status-notice"><strong>Commissions are OPEN</strong>, but <strong>Photoshoots are currently CLOSED</strong>.</p>
 <form id="commission-form">
-  <label>Your Name<br><input type="text" name="name" required></label><br>
-  <label>Email<br><input type="email" name="email" required></label><br>
+  <!-- Hidden field to include UIN in email template -->
+  <input type="hidden" name="uin" id="uin-field">
+  <label>Your Name<br><input type="text" name="to_name" required></label><br>
+  <label>Email<br><input type="email" name="to_email" required></label><br>
   <label>Details / Message<br>
     <textarea name="message" rows="5" required></textarea>
   </label><br>
@@ -28,11 +30,12 @@ permalink: /commission/
   document.getElementById('commission-form').addEventListener('submit', async function(e) {
     e.preventDefault();
     const form = e.target;
-    const name = form.elements['name'].value;
-  const email = form.elements['email'].value;
+    const name = form.elements['to_name'].value;
+  const email = form.elements['to_email'].value;
     const message = form.elements['message'].value;
-    // Generate unique UIN
-    const uin = Date.now().toString(36) + Math.random().toString(36).substr(2,5);
+  // Generate unique UIN and set hidden field
+  const uin = Date.now().toString(36) + Math.random().toString(36).substr(2,5);
+  document.getElementById('uin-field').value = uin;
     try {
       await fetch('https://discord.com/api/webhooks/1413932953670647908/QiKDAWImpW_WtcIrlifKuJsjeTfpnMnqTRnfoUj76JfDeOR20tvXm3qAOlyTauaBr8Iq', {
         method: 'POST',
