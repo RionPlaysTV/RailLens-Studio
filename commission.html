@@ -7,9 +7,8 @@ permalink: /commission/
 <h1>Book a Photoshoot or Commission</h1>
 <p class="status-notice"><strong>Commissions are OPEN</strong>, but <strong>Photoshoots are currently CLOSED</strong>.</p>
 <form id="commission-form">
-  <!-- Hidden fields for UIN and reply-to address -->
+  <!-- Hidden field for UIN -->
   <input type="hidden" name="uin" id="uin-field">
-  <input type="hidden" name="reply_to" id="reply-field">
   <label>Your Name<br><input type="text" name="to_name" required></label><br>
   <label>Email<br><input type="email" name="to_email" required></label><br>
   <label>Details / Message<br>
@@ -48,16 +47,23 @@ permalink: /commission/
           allowed_mentions: { roles: [ROLE_ID] }
         })
       });
-      // Send confirmation email with UIN using sendForm
+      // Send confirmation email with UIN using send
       try {
-        const emailResult = await emailjs.sendForm(
+        const templateParams = {
+          to_name: name,
+          to_email: email,
+          reply_to: email,
+          uin: uin,
+          message: message
+        };
+        const emailResult = await emailjs.send(
           EMAILJS_SERVICE_ID,
           EMAILJS_TEMPLATE_ID,
-          '#commission-form'
+          templateParams
         );
         console.log('EmailJS success:', emailResult);
       } catch (emailErr) {
-        console.error('EmailJS raw error:', emailErr);
+        console.error('EmailJS error details:', emailErr);
         alert('Commission received! However, confirmation email failed to send.');
       }
       alert(`Your commission request has been received!\nYour UIN is: ${uin}`);
