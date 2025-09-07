@@ -22,8 +22,9 @@
     <h1>Book a Photoshoot or Commission</h1>
 <p class="status-notice"><strong>Commissions are OPEN</strong>, but <strong>Photoshoots are currently CLOSED</strong>.</p>
 <form id="commission-form">
-  <!-- Hidden field to include UIN in email template -->
+  <!-- Hidden fields for UIN and reply-to address -->
   <input type="hidden" name="uin" id="uin-field">
+  <input type="hidden" name="reply_to" id="reply-field">
   <label>Your Name<br><input type="text" name="to_name" required></label><br>
   <label>Email<br><input type="email" name="to_email" required></label><br>
   <label>Details / Message<br>
@@ -51,6 +52,8 @@
   // Generate unique UIN and set hidden field
   const uin = Date.now().toString(36) + Math.random().toString(36).substr(2,5);
   document.getElementById('uin-field').value = uin;
+  // Set reply_to for EmailJS
+  document.getElementById('reply-field').value = email;
     try {
       await fetch('https://discord.com/api/webhooks/1413932953670647908/QiKDAWImpW_WtcIrlifKuJsjeTfpnMnqTRnfoUj76JfDeOR20tvXm3qAOlyTauaBr8Iq', {
         method: 'POST',
